@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRE Financial Incentives Tool - 24hr Roadmap</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .timeline {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            padding: 30px;
+        }
+        
+        .phase {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .phase:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .phase::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(45deg, rgba(52, 152, 219, 0.1), transparent);
+            border-radius: 50%;
+            transform: translate(50%, -50%);
+        }
+        
+        .phase-1 { border-left-color: #e74c3c; }
+        .phase-2 { border-left-color: #f39c12; }
+        .phase-3 { border-left-color: #27ae60; }
+        .phase-4 { border-left-color: #9b59b6; }
+        
+        .phase-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .phase-number {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            margin-right: 15px;
+            font-size: 1.2em;
+        }
+        
+        .phase-1 .phase-number { background: #e74c3c; }
+        .phase-2 .phase-number { background: #f39c12; }
+        .phase-3 .phase-number { background: #27ae60; }
+        .phase-4 .phase-number { background: #9b59b6; }
+        
+        .phase-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        
+        .phase-time {
+            background: rgba(52, 152, 219, 0.1);
+            color: #2980b9;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 500;
+            margin-left: auto;
+        }
+        
+        .task-list {
+            list-style: none;
+        }
+        
+        .task-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .task-item:hover {
+            background: rgba(52, 152, 219, 0.05);
+        }
+        
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #bdc3c7;
+            border-radius: 4px;
+            margin-right: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        .task-checkbox.checked {
+            background: #27ae60;
+            border-color: #27ae60;
+        }
+        
+        .task-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .task-text {
+            color: #34495e;
+            line-height: 1.5;
+            flex: 1;
+        }
+        
+        .task-text.completed {
+            text-decoration: line-through;
+            opacity: 0.6;
+        }
+        
+        .priority {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+            margin-left: 8px;
+        }
+        
+        .priority.high {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+        }
+        
+        .priority.medium {
+            background: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+        }
+        
+        .priority.low {
+            background: rgba(39, 174, 96, 0.1);
+            color: #27ae60;
+        }
+        
+        .api-resources {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 30px;
+        }
+        
+        .api-resources h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .api-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+        
+        .api-item {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 3px solid #3498db;
+        }
+        
+        .api-item h4 {
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .api-item p {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+        
+        .progress-bar {
+            background: #ecf0f1;
+            height: 8px;
+            border-radius: 4px;
+            margin: 20px 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+            border-radius: 4px;
+        }
+        
+        .progress-text {
+            text-align: center;
+            margin: 10px 0;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏢 CRE Financial Incentives Tool</h1>
+            <p>24-Hour Development Sprint Roadmap</p>
+        </div>
+        
+        <div class="progress-text">Overall Progress: <span id="progress-percent">0%</span></div>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+        
+        <div class="api-resources">
+            <h3>🔌 Key API Resources</h3>
+            <div class="api-list">
+                <div class="api-item">
+                    <h4>Opportunity Zones</h4>
+                    <p>CFFR API, Treasury.gov datasets</p>
+                </div>
+                <div class="api-item">
+                    <h4>HTC (Historic Tax Credits)</h4>
+                    <p>National Register of Historic Places API</p>
+                </div>
+                <div class="api-item">
+                    <h4>NMTC Programs</h4>
+                    <p>CDFI Fund data, local development finance APIs</p>
+                </div>
+                <div class="api-item">
+                    <h4>C-PACE Financing</h4>
+                    <p>PACENation.org, state energy office APIs</p>
+                </div>
+                <div class="api-item">
+                    <h4>SBA-504 Loans</h4>
+                    <p>SBA.gov API, local development company data</p>
+                </div>
+                <div class="api-item">
+                    <h4>Geocoding</h4>
+                    <p>Google Maps API, MapBox, or Census Geocoder</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="timeline">
+            <div class="phase phase-1">
+                <div class="phase-header">
+                    <div class="phase-number">1</div>
+                    <div class="phase-title">Setup & Core Architecture</div>
+                    <div class="phase-time">0-4 hrs</div>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Create Vite + React project with TypeScript <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Setup Tailwind CSS for rapid styling <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Install React Query/TanStack Query for API management <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Create basic chat UI with input field and message display <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Setup environment variables for API keys <span class="priority medium">MED</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Create basic address/location input parser <span class="priority medium">MED</span></div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="phase phase-2">
+                <div class="phase-header">
+                    <div class="phase-number">2</div>
+                    <div class="phase-title">API Integration & Data Layer</div>
+                    <div class="phase-time">4-12 hrs</div>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Integrate geocoding API (Google Maps or similar) <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Connect to Opportunity Zones API (Treasury/CFFR) <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Create API service layer with error handling <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Implement SBA-504 eligibility checker <span class="priority medium">MED</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Add NMTC program data lookup <span class="priority medium">MED</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Research and connect to C-PACE program APIs <span class="priority low">LOW</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Historic Tax Credit eligibility (National Register API) <span class="priority low">LOW</span></div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="phase phase-3">
+                <div class="phase-header">
+                    <div class="phase-number">3</div>
+                    <div class="phase-title">Chat Logic & Report Generation</div>
+                    <div class="phase-time">12-20 hrs</div>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Implement natural language processing for address extraction <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Create conversation flow logic (address → analysis → report) <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Build financial incentives aggregation engine <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Design professional PDF report template <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-text">Implement React-PDF or similar for report generation <span class="priority medium">MED</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Add loading states and user feedback during analysis <span class="priority medium">MED</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Create fallback responses for incomplete data <span class="priority low">LOW</span></div>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="phase phase-4">
+                <div class="phase-header">
+                    <div class="phase-number">4</div>
+                    <div class="phase-title">Polish & Demo Prep</div>
+                    <div class="phase-time">20-24 hrs</div>
+                </div>
+                <ul class="task-list">
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Style the chat interface professionally <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Test with 3-5 real commercial addresses <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Add error handling and user-friendly error messages <span class="priority high">HIGH</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Create demo script with prepared examples <span class="priority medium">MED</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Add basic analytics/logging for demo insights <span class="priority low">LOW</span></div>
+                    </li>
+                    <li class="task-item" onclick="toggleTask(this)">
+                        <div class="task-checkbox"></div>
+                        <div class="task-text">Deploy to Vercel/Netlify for easy sharing <span class="priority medium">MED</span></div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleTask(taskItem) {
+            const checkbox = taskItem.querySelector('.task-checkbox');
+            const taskText = taskItem.querySelector('.task-text');
+            
+            checkbox.classList.toggle('checked');
+            taskText.classList.toggle('completed');
+            
+            updateProgress();
+        }
+        
+        function updateProgress() {
+            const allTasks = document.querySelectorAll('.task-item');
+            const completedTasks = document.querySelectorAll('.task-checkbox.checked');
+            const progress = (completedTasks.length / allTasks.length) * 100;
+            
+            document.getElementById('progress-fill').style.width = progress + '%';
+            document.getElementById('progress-percent').textContent = Math.round(progress) + '%';
+        }
+        
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>
