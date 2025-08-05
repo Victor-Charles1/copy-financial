@@ -12,6 +12,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-query": "^5.84.1",
+    "lucide-react": "^0.536.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tailwindcss": "^4.1.11"
@@ -26,5 +27,18 @@
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
     "vite": "^7.0.4"
-  }
+  },
+  "description": "Commercial Real Estate Financial Incentives Analysis Tool",
+  "keywords": [
+    "commercial real estate",
+    "tax credits",
+    "opportunity zones",
+    "historic tax credits",
+    "NMTC",
+    "C-PACE",
+    "SBA 504",
+    "financial incentives"
+  ],
+  "author": "Victor Charles",
+  "license": "MIT"
 }
